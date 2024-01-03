@@ -2,7 +2,7 @@ import { ProductsFetchResponse } from "@/types/products-response"
 import { useQuery} from "@tanstack/react-query"
 import axios, {AxiosPromise} from "axios"
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL as string
+const API_URL = 'http://localhost:3333'
 
 const fetcher = (): AxiosPromise<ProductsFetchResponse> => {
   return axios.post(
@@ -24,8 +24,10 @@ export function useProducts() {
     queryFn: fetcher,
     queryKey:['products']
   })
+  console.log(data)
 
   return{
     data: data?.data?.data?.allProducts
   }
 }
+
