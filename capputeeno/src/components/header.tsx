@@ -27,7 +27,7 @@ const TagHeader = styled.header`
     gap: 24px
   }
 
-  @media(min-width: 768px){
+  @media(min-width: ${props => props.theme.desktopBreakpoint}){
     padding: 20px 160px;
   }
 `;
@@ -38,7 +38,7 @@ font-weight: 400;
   font-size: 24px;
   line-height: 150%;
 
-  @media(min-width: 768px){
+  @media(min-width: ${props => props.theme.desktopBreakpoint}){
     font-size:40px;
   }
 `;
