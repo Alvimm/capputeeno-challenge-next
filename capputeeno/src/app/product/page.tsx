@@ -107,6 +107,33 @@ const ProductInfo = styled.div`
 `
 export default function Product({searchParams}: { searchParams: { id: string } }) {
   const {data} = useProduct(searchParams.id)
+  
+  const handleAddToCart = () => {
+    const newCart = [{...data, quantity: 1 , id: searchParams.id}]
+    let cartItems = localStorage.getItem('cart-items')
+      if (cartItems){
+        let cartItemsArray = JSON.parse(cartItems)
+        
+        let existingProductIndex = cartItemsArray.findIndex((item: {id:string}) => item.id === searchParams.id)
+
+        if(existingProductIndex != -1){
+          cartItemsArray[existingProductIndex].quantity +=1
+      } else{
+        cartItemsArray.push(newCart)
+      }
+      
+      localStorage.setItem('cart-items', JSON.stringify(cartItemsArray))
+    } else{
+      localStorage.setItem('cart-items', JSON.stringify(newCart))
+    }
+  }
+  type CategoryTranslate = {
+    [key: string]: string
+  }
+  const translate: CategoryTranslate = {
+    "mugs": "Canecas",
+    "t-shirts": "Camisetas"
+  };
   return(
     <DefaultPageLayout>
       <Container>
@@ -115,7 +142,7 @@ export default function Product({searchParams}: { searchParams: { id: string } }
           <img src={data?.image_url} />
           <div>
             <ProductInfo>
-              <span>{data?.category}</span>
+              <span>{data?.category && translate[data?.category]}</span>
               <h2>{data?.name}</h2>
               <span>{formatPrice(data?.price_in_cents ?? 0)}</span>
               <p>*Frete de R$40,00 para todo o Brasil. Grátis para compras acima de R$900,00.</p>
@@ -124,7 +151,7 @@ export default function Product({searchParams}: { searchParams: { id: string } }
                 <p>{data?.description}</p>
               </div>
             </ProductInfo>
-            <button><ShopBagIcon/> adicionar ao carrinho</button>
+            <button onClick={handleAddToCart}><ShopBagIcon/> adicionar ao carrinho</button>
           </div>
         </section>
       </Container>
