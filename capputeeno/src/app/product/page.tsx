@@ -107,9 +107,8 @@ const ProductInfo = styled.div`
 `
 export default function Product({searchParams}: { searchParams: { id: string } }) {
   const {data} = useProduct(searchParams.id)
-  
+
   const handleAddToCart = () => {
-    const newCart = [{...data, quantity: 1 , id: searchParams.id}]
     let cartItems = localStorage.getItem('cart-items')
       if (cartItems){
         let cartItemsArray = JSON.parse(cartItems)
@@ -119,14 +118,16 @@ export default function Product({searchParams}: { searchParams: { id: string } }
         if(existingProductIndex != -1){
           cartItemsArray[existingProductIndex].quantity +=1
       } else{
-        cartItemsArray.push(newCart)
+        cartItemsArray.push({...data, quantity: 1 , id: searchParams.id})
       }
       
       localStorage.setItem('cart-items', JSON.stringify(cartItemsArray))
     } else{
+      const newCart = [{...data, quantity: 1 , id: searchParams.id}]
       localStorage.setItem('cart-items', JSON.stringify(newCart))
     }
   }
+  
   type CategoryTranslate = {
     [key: string]: string
   }
@@ -139,7 +140,7 @@ export default function Product({searchParams}: { searchParams: { id: string } }
       <Container>
         <BackBtn navigate="/"/>
         <section>
-          <img src={data?.image_url} />
+          <img src={data?.image_url} alt={data?.name}/>
           <div>
             <ProductInfo>
               <span>{data?.category && translate[data?.category]}</span>
