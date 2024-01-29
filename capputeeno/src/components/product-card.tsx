@@ -28,6 +28,7 @@ const Card = styled.div`
   img{
     width: 256px;
     height: 300px;
+    border-radius: 4px 4px 0px 0px;
   }
 
   h3{
